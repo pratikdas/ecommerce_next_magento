@@ -51,8 +51,13 @@ export async function getStaticProps() {
   const res = await fetch(API_URLS.ADMIN_TOKEN, requestOptions)
   const tokenResult = await res.json()
   console.log(tokenResult)*/
-  const res1 = await fetch(API_URLS.CATEGORIES, {headers: {Authorization: "Bearer " + process.env.ADMIN_TOKEN}})
-  const categoriesResponse = await res1.json()
+  const data = await fetch(API_URLS.CATEGORIES, {headers: {Authorization: "Bearer " + process.env.ADMIN_TOKEN}})
+  
+  /*if (errors || !data) {
+    return { notFound: true };
+  }*/
+  
+  const categoriesResponse = await data.json()
   
   const categories = categoriesResponse.children_data
   

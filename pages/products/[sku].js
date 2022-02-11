@@ -3,7 +3,7 @@ import API_URLS from '../../api_urls'
 
 const Product = ({product}) => {
   
-  console.log("rendering products " + product)
+  
   return (
   <section>
         <div className="container">
@@ -11,12 +11,12 @@ const Product = ({product}) => {
             
              <ul>
                  {
-                   product[0].file
+                   product.name
                  }
              </ul>
             </div>
         </div>
-        </section>)
+  </section>)
 }
 
 export default Product
@@ -36,8 +36,13 @@ export async function getServerSideProps(context) {
     const res = await fetch(API_URLS.ADMIN_TOKEN, requestOptions)
     const tokenResult = await res.json()*/
   
-    const res1 = await fetch(API_URLS.PRODUCT_MEDIA.replace(":sku", sku), {headers: {Authorization: `Bearer ${process.env.ADMIN_TOKEN}`}})
-    const product = await res1.json()
+    const productURL = API_URLS.PRODUCT.replace(":sku",sku)
+    const resp = await fetch(productURL, {headers: {Authorization: `Bearer ${process.env.ADMIN_TOKEN}`}})
+    const product = await resp.json()
+
+    console.log("product "+ JSON.stringify(product))
+    //const res1 = await fetch(API_URLS.PRODUCT_MEDIA.replace(":sku", sku), {headers: {Authorization: `Bearer ${process.env.ADMIN_TOKEN}`}})
+    //const productWIthMedia = await res1.json()
     
   
     return {

@@ -4,8 +4,11 @@ import '../styles/globals.css'
 
 // add bootstrap css 
 import 'bootstrap/dist/css/bootstrap.css'
+
+
 // own css files here
 import "../styles/customcss.css";
+import { AppWrapper } from '../contexts/state';
 
 
 function MyApp({ Component, pageProps }) {
@@ -14,11 +17,14 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Layout>
-       <Component {...pageProps} />
-      </Layout>
+      <AppWrapper>
+        <Layout>
+        <Component {...pageProps} />
+        </Layout>
+      </AppWrapper>
+    
     </>
  
   )

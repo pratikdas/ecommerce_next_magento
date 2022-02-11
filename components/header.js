@@ -13,16 +13,13 @@ const Header = ()=>(
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                    <Link href="/"
-                    >
-                    Home
-                    </Link>
+                    <Link href="/home">Home </Link>
                 </li>
                 <li className="nav-item">
                    <Link href="/categories">Categories</Link>
                 </li>
                 <li className="nav-item">
-                   <Link href="/deals">Login</Link>
+                   <Link href="/login">Login</Link>
                    
                 </li>
 
@@ -36,6 +33,17 @@ const Header = ()=>(
                     <button className="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
+            <div className="dropdown">
+                <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Language
+                </a>
+
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a className="dropdown-item" href="#">English</a></li>
+                    <li><a className="dropdown-item" href="#">Arabic</a></li>
+                   
+                </ul>
+                </div>
             </div>
     </nav>
   </>

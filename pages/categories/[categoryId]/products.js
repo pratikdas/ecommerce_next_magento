@@ -18,7 +18,7 @@ const Products = ({products}) => {
               pathname: '/products/[sku]',
               query: { sku: product.sku }
             }}>
-              <a>{product.sku} {product.extension_attributes}</a>
+              <a>{product.sku}</a>
                           </Link>
                          </li>
                      ))
@@ -41,20 +41,17 @@ export async function getStaticProps({params}) {
   const tokenResult = await res.json()*/
 
   const productsURL = API_URLS.PRODUCTS.replace(":categoryId",params.categoryId)
-  const res1 = await fetch(productsURL, {headers: {Authorization: `Bearer ${process.env.ADMIN_TOKEN}`}})
-  const products = await res1.json()
-  
-  console.log("products "+ products.length)
+  const res = await fetch(productsURL, {headers: {Authorization: `Bearer ${process.env.ADMIN_TOKEN}`}})
+  const products = await res.json()
+
 
   return {
     props: {
       products
     }
   }
-
-  
-
 }
+
 
 export async function getStaticPaths() {
   const requestOptions = {
