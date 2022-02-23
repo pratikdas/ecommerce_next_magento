@@ -3,6 +3,15 @@ import { useRouter } from 'next/router'
 import API_URLS from '../../../api_urls'
 
 const Products = ({products}) => {
+  const router = useRouter()
+
+  const buy = (e)=>{
+    const sku = e.target.value
+    router.push({
+      pathname: '/billingaddress',
+      query: { sku: sku }
+    })
+  }
  
   console.log("rendering products")
   return (
@@ -19,7 +28,8 @@ const Products = ({products}) => {
               query: { sku: product.sku }
             }}>
               <a>{product.sku}</a>
-                          </Link>
+                          </Link> &nbsp;&nbsp;
+                          <button type="button" className="btn btn-primary" value={product.sku} onClick={buy}>Buy</button>
                          </li>
                      ))
                  }

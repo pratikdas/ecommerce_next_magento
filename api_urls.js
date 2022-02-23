@@ -12,7 +12,8 @@ const API_URLS = {
     "CATEGORIES" : computeURL("/rest/V1/categories"),
     "PRODUCTS" : computeURL("/rest/V1/categories/:categoryId/products"),
     "PRODUCT_MEDIA" : computeURL("/rest/V1/products/:sku/media"),
-    "PRODUCT" : computeURL("/rest/V1/products/:sku")
+    "PRODUCT" : computeURL("/rest/V1/products/:sku"),
+    "PLACE_ORDER": computeURL("/rest/V1/custom/order-create")
 
 }
 
