@@ -4,7 +4,6 @@ import API_URLS from '../../../api_urls'
 
 const Products = ({products}) => {
   const router = useRouter()
-
   const buy = (e)=>{
     const sku = e.target.value
     router.push({
@@ -12,31 +11,37 @@ const Products = ({products}) => {
       query: { sku: sku }
     })
   }
- 
-  console.log("rendering products")
-  return (
-  <section>
-        <div className="container">
-            <div className="row align-items-center">
-            
-             <ul>
+  if (products) {
+      console.log(products.items);
+      return (
+      <section>
+            <div className="container">
+                <div className="row align-items-center">
+                  <ul>
                  {
-                     products.map((product)=>(
+                     products.items.map((product)=>(
                          <li key={product.sku}>
                          <Link href={{
-              pathname: '/products/[sku]',
-              query: { sku: product.sku }
-            }}>
-              <a>{product.sku}</a>
-                          </Link> &nbsp;&nbsp;
-                          <button type="button" className="btn btn-primary" value={product.sku} onClick={buy}>Buy</button>
-                         </li>
-                     ))
-                 }
-             </ul>
+                              pathname: '/products/[sku]',
+                              query: { sku: product.sku }
+                            }}>
+                              <a>{product.name}</a>
+                              </Link> &nbsp;&nbsp;
+                              <button type="button" className="btn btn-primary" value={product.sku} onClick={buy}>Buy</button>
+                             </li>
+                         ))
+                  }
+                 </ul>
+                </div>
             </div>
-        </div>
-        </section>)
+            </section>)
+  } else {
+    return (
+      <section>
+      </section>
+    )
+  }
+  console.log("rendering products")
 }
 
 export default Products
@@ -50,11 +55,11 @@ export async function getStaticProps({params}) {
   const res = await fetch(API_URLS.ADMIN_TOKEN, requestOptions)
   const tokenResult = await res.json()*/
 
-  const productsURL = API_URLS.PRODUCTS.replace(":categoryId",params.categoryId)
+  const productsUrlWithParam = API_URLS.PRODUCTS + "?searchCriteria[filter_groups][0][filters][0][field]=category_id&searchCriteria[filter_groups][0][filters][0][value]=:categoryId&searchCriteria[filter_groups][0][filters][0][condition_type]=eq"
+  const productsURL = productsUrlWithParam.replace(":categoryId",params.categoryId)
   const res = await fetch(productsURL, {headers: {Authorization: `Bearer ${process.env.ADMIN_TOKEN}`}})
   const products = await res.json()
-
-
+  console.log(products);
   return {
     props: {
       products
@@ -75,15 +80,15 @@ export async function getStaticPaths() {
 
   const res1 = await fetch("https://magento2-demo.magebit.com/index.php/rest/V1/categories", {headers: {Authorization: "Bearer "+tokenResult}})
   const categoriesResponse = await res1.json()
-  
+
   const categories = categoriesResponse.children_data
 
   const paths = []
   categories.map(category=>{
     paths.push({params: {categoryId: category.id.toString()}})
   })
-  
+
   paths.map(path=>console.log(path.params.categoryId))
-  
+
   return { paths, fallback: true }
-} 
+}
