@@ -17,7 +17,7 @@ export default function Login(){
             case "email": updateLoginState(prevState=>{return {...prevState, email: value}});break;
             case "pwd": updateLoginState(prevState=>{return {...prevState, pwd: value}});break;
         }
-     }; 
+     };
 
     const handleSubmit = (e)=>{
         const {id,value} = e.target
@@ -33,10 +33,10 @@ export default function Login(){
           .then((data) => {
               console.log(data)
               setUserCtx({isAuth:true, user:{name:"pratik"}});
-              
-              router.push("/")
+
+              router.push("/myaccount/order-listing")
            });
-        
+
       }
     return (
         <section>
@@ -46,13 +46,13 @@ export default function Login(){
                 <div className="mb-3">
                 <label htmlFor="email" className="form-label">Email address</label>
                 <input type="email" className="form-control" id="email" aria-describedby="emailHelp" onChange={handleChange}/>
-                
+
                 </div>
                 <div className="mb-3">
                 <label htmlFor="pwd" className="form-label">Password</label>
                 <input type="password" className="form-control" id="pwd" onChange={handleChange}/>
                 </div>
-    
+
                 <button type="button" onClick={handleSubmit} className="btn btn-primary">Submit</button>
                 </form>
             </div>
