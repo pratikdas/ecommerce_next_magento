@@ -14,7 +14,11 @@ const API_URLS = {
     "PRODUCT_MEDIA" : computeURL("/rest/V1/products/:sku/media"),
     "PRODUCT" : computeURL("/rest/V1/products/:sku"),
     "PLACE_ORDER": computeURL("/rest/V1/custom/order-creation"),
-    "ORDER_LISTING": computeURL("/rest/V1/orders")
+    "ORDER_LISTING": computeURL("/rest/V1/orders"),
+    "BUSINESS_REGISTRATION": computeURL("/rest/V1/businessregistration"),
+    "CUSTOMER_DETAILS": computeURL("/rest/V1/customers/search"),
+    "REGISTER_CUSTOMER": computeURL("/rest/V1/customers")
+
 
 }
 

@@ -1,32 +1,35 @@
-
+import API_URLS from '../api_urls'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from "react-hook-form";
+import Cookies from 'js-cookie'
 
-
-
-export default function BillingAddress(){
+  const customerAddress = ({customerAddress}) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const router = useRouter()
-
+    console.log(customerAddress);
+    const contactAddress = {};
+    customerAddress.items.map( productcustom => {
+      productcustom.addresses.map( billingAddress => {
+        console.log(billingAddress);
+        contactAddress.firstname = billingAddress.firstname
+        contactAddress.lastname = billingAddress.lastname
+        contactAddress.street = billingAddress.street[0]
+        contactAddress.city = billingAddress.city
+        contactAddress.postcode = billingAddress.postcode
+        contactAddress.region = billingAddress.region.region
+        contactAddress.country_id = billingAddress.country_id
+        contactAddress.telephone = billingAddress.telephone
+      })
+    })
+    console.log(contactAddress);
     const [billingAddressState, updateBillingAddressState] = useState({firstName:"", lastName: ""})
-
-    /*const handleChange = (e)=>{
-        const {id, value} = e.target;
-
-        switch(id){
-            case "firstName": updateBillingAddressState(prevState=>{return {...prevState, firstName: value}});break
-            case "lastName": updateBillingAddressState(prevState=>{return {...prevState, lastName: value}});break
-            case "street": updateBillingAddressState(prevState=>{return {...prevState, street: value}});break;
-            case "city": updateBillingAddressState(prevState=>{return {...prevState, city: value}});break;
-        }
-     }; */
-
     const onSubmit = (data) => {
 
         console.log(updateBillingAddressState.firstName + " " + updateBillingAddressState.lastName)
 
         data.sku = router.query.sku
+        data.email = Cookies.get('userlogin');
         fetch('/api/placeorder', {
             method: 'POST',
             headers: {
@@ -36,7 +39,6 @@ export default function BillingAddress(){
           })
           .then((response) => response.json())
           .then((data) => {
-              console.log(data)
               router.push("/orderresult")
            });
     };
@@ -45,55 +47,50 @@ export default function BillingAddress(){
     return (
         <section>
         <div className="container">
-            <div className="row align-items-center">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="mb-3">
-                   <label htmlFor="firstName" className="form-label">First Name</label>
-                   <input type="text" className="form-control" id="firstname"  {...register("address[firstname]", { required: true, maxLength: 20 })}/>
-                   <p>{errors.firstname?.type === 'required' && "First name is required"}</p>
-                </div>
-                <div className="mb-3">
-                   <label htmlFor="lastName" className="form-label">Last Name</label>
-                   <input type="text" className="form-control" id="lastname"  {...register("address[lastname]", { required: true, maxLength: 20 })}/>
-                   <p>{errors.lastname?.type === 'required' && "Last name is required"}</p>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email address</label>
-                    <input type="email" className="form-control" id="email"  {...register("email")}/>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="pwd" className="form-label">Street</label>
-                    <input type="text" className="form-control" id="pwd" {...register("address[street]")}/>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="pwd" className="form-label">City</label>
-                    <input type="text" className="form-control" id="pwd" {...register("address[city]")}/>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="pwd" className="form-label">Post Code</label>
-                    <input type="text" className="form-control" id="pwd" {...register("address[postcode]")}/>
-                </div>
-                <div className="mb-3">
-                   <label htmlFor="country_id" className="form-label">Country</label>
-                   <select className="form-control" {...register("address[country_id]")}>
-                        <option value="-1">--Select--</option>
-                        <option value="IN">India</option>
-                        <option value="UAE">UAE</option>
-                        <option value="KSA">KSA</option>
-                   </select>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="pwd" className="form-label">State / Province</label>
-                    <input type="text" className="form-control" id="pwd" {...register("address[region_id]")}/>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="pwd" className="form-label">Mobile / Phone</label>
-                    <input type="text" className="form-control" id="pwd" {...register("address[telephone]")}/>
-                </div>
-                <button type="submit" className="btn btn-primary">Buy</button>
-                </form>
-            </div>
+          <div className="row align-items-center leftbill" >
+              <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="mb-3">
+                      <input name="acceptTerms" type="checkbox" {...register('checkbox2')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
+                      <label htmlFor="email" className="form-label">&nbsp;T&C 1 {customerAddress[0]}</label>
+                  </div>
+                  <div className="mb-3">
+                      <input name="acceptTerms" type="checkbox" {...register('checkbox2')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
+                      <label htmlFor="email" className="form-label">&nbsp;T&C 2</label>
+                  </div>
+                  <div className="mb-3">
+                      <input name="acceptTerms" type="checkbox" {...register('checkbox3')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
+                      <label htmlFor="email" className="form-label">&nbsp; T&C 3</label>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary">Buy Property</button>
+              </form>
+          </div>
+          <div className = 'customer-details rightbill'>
+              <h4>Contact Address</h4>
+              <p>{contactAddress.firstname} {contactAddress.lastname} </p>
+              <p>{contactAddress.street}, {contactAddress.city} </p>
+              <p>{contactAddress.postcode} ,  {contactAddress.region} </p>
+              <p>{contactAddress.country_id} ,  M-{contactAddress.telephone} &nbsp;&nbsp;&nbsp; Edit Address</p>
+              <p> </p>
+          </div>
         </div>
         </section>
     );
 }
+export default customerAddress
+
+export async function getServerSideProps(context) {
+  const userlogin = context.req.cookies['userlogin']
+  console.log(userlogin);
+  const getUrlWith  =  API_URLS.CUSTOMER_DETAILS + "?searchCriteria[filterGroups][0][filters][0][field]=email&searchCriteria[filterGroups][0][filters][0][value]=" + userlogin + "&searchCriteria[filterGroups][0][filters][0][condition_type]=eq"
+  const data = await fetch(getUrlWith, {headers: {Authorization: "Bearer " + process.env.ADMIN_TOKEN}})
+  const customerAllDetails = await data.json()
+  const customerAddress = customerAllDetails;
+  const orderlisting = customerAddress.children_data
+  console.log(customerAddress);
+  return {
+      props: {
+        customerAddress
+      }
+    }
+  }

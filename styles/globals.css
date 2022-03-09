@@ -37,3 +37,12 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.leftbill {
+  float:left;
+  width:60%;
+}
+.rightbill {
+  float:right;
+  width:40%;
+}

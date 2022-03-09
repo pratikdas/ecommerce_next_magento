@@ -1,11 +1,12 @@
-
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import Link from 'next/link'
 import { useAppContext } from '../contexts/state'
+import Cookies from 'js-cookie'
 
 
 export default function Login(){
+
     const router = useRouter()
     const [loginState, updateLoginState] = useState({email:"", pwd: ""})
     const {userCtx, setUserCtx} = useAppContext();
@@ -19,6 +20,7 @@ export default function Login(){
         }
      };
 
+
     const handleSubmit = (e)=>{
         const {id,value} = e.target
         console.log(loginState.email + " " + loginState.pwd)
@@ -31,9 +33,8 @@ export default function Login(){
           })
           .then((response) => response.json())
           .then((data) => {
-              console.log(data)
+              Cookies.set('userlogin', data.email);
               setUserCtx({isAuth:true, user:{name:"pratik"}});
-
               router.push("/myaccount/order-listing")
            });
 

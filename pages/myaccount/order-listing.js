@@ -2,8 +2,10 @@ import { route } from 'next/dist/server/router'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import API_URLS from '../../api_urls'
+import Cookies from 'js-cookie'
 
 export default function Products({orderlistingResponse}){
+  const customerEmail = Cookies.get() // => 'value'
     const router = useRouter()
     return (
         <section>
@@ -34,17 +36,14 @@ export default function Products({orderlistingResponse}){
         </section>
     );
 }
-export async function getStaticProps() {
-  const getUrlWith  =  API_URLS.ORDER_LISTING + "?searchCriteria[filter_groups][0][filters][0][field]=customer_email&searchCriteria[filter_groups][0][filters][0][value]=vijay2591@gmail.com"
+export async function getServerSideProps(context) {
+  const userlogin = context.req.cookies['userlogin']
+  const getUrlWith  =  API_URLS.ORDER_LISTING + "?searchCriteria[filter_groups][0][filters][0][field]=customer_email&searchCriteria[filter_groups][0][filters][0][value]=" + userlogin
   const data = await fetch(getUrlWith, {headers: {Authorization: "Bearer " + process.env.ADMIN_TOKEN}})
   const orderlistingResponse = await data.json()
 
   const orderlisting = orderlistingResponse.children_data
-  console.log(orderlistingResponse);
-
-    // By returning { props: { categories } }, the categories component
-    // will receive `categories` as a prop at build time
-    return {
+  return {
       props: {
         orderlistingResponse
       }
