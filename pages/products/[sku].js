@@ -40,7 +40,7 @@ const Product = ({product}) => {
       <div className={styles.container}>
 
         <div className={styles.leftcolumn}>
-            <img class={styles.active} src={process.env.MEDIA_URL + "/catalog/product" + product.media_gallery_entries[0].file} />
+          {Object.entries(product.media_gallery_entries).length !== 0  && <img class={styles.active} src={process.env.MEDIA_URL + "/catalog/product" + product.media_gallery_entries[0].file} />}
         </div>
         <div className={styles.rightcolumn}>
           <div className={styles.productdescription}>
